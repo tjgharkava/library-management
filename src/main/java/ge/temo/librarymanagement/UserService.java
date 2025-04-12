@@ -4,11 +4,11 @@ import ge.temo.librarymanagement.model.UserDTO;
 import ge.temo.librarymanagement.model.UserRequest;
 import ge.temo.librarymanagement.persistance.User;
 import ge.temo.librarymanagement.persistance.UserRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -18,10 +18,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserDTO> getUsers(int page, int size, String name) {
-        return userRepository.findUsers(
-                name, PageRequest.of(page, size)
-        ).stream().map(this::mapUser).collect(Collectors.toList());
+    public Page<UserDTO> getUsers(int page, int size, String name) {
+        return userRepository.findUsers(name, PageRequest.of(page, size));
     }
 
     public void createUser(UserRequest userDTO) {
@@ -47,5 +45,9 @@ public class UserService {
                 user.getId(),
                 user.getName()
                 );
+    }
+
+    public User findUser(Long id) {
+        return userRepository.findById(id).get();
     }
 }

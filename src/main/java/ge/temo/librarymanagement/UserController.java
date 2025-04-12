@@ -2,6 +2,8 @@ package ge.temo.librarymanagement;
 
 import ge.temo.librarymanagement.model.UserDTO;
 import ge.temo.librarymanagement.model.UserRequest;
+import ge.temo.librarymanagement.persistance.User;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping
-    List<UserDTO> getUsers(@RequestParam int page,
+    Page<UserDTO> getUsers(@RequestParam int page,
                            @RequestParam int size,
                            @RequestParam String name) {
         return userService.getUsers(page, size, name);
