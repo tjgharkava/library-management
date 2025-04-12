@@ -1,13 +1,13 @@
 package ge.temo.librarymanagement.model;
 
-public class Book {
+public class BookDTO {
     private Long id;
     private String title;
     private String author;
     private boolean borrowed;
-    private User borrower;
+    private UserDTO borrower;
 
-    public Book(Long id, String title, String author, boolean borrowed, User borrower) {
+    public BookDTO(Long id, String title, String author, boolean borrowed, UserDTO borrower) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -31,7 +31,7 @@ public class Book {
         return borrowed;
     }
 
-    public User getBorrower() {
+    public UserDTO getBorrower() {
         return borrower;
     }
 
@@ -47,7 +47,7 @@ public class Book {
         this.borrowed = borrowed;
     }
 
-    public void setBorrower(User borrower) {
+    public void setBorrower(UserDTO borrower) {
         this.borrower = borrower;
     }
 

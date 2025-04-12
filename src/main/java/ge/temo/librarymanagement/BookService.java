@@ -1,57 +1,50 @@
 package ge.temo.librarymanagement;
 
-import ge.temo.librarymanagement.model.Book;
-import ge.temo.librarymanagement.model.User;
-import jakarta.annotation.PostConstruct;
+import ge.temo.librarymanagement.model.BookDTO;
+import ge.temo.librarymanagement.model.UserDTO;
+import ge.temo.librarymanagement.persistance.Book;
+import ge.temo.librarymanagement.persistance.BookRepository;
+import ge.temo.librarymanagement.persistance.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
-    public final List<Book> books = new ArrayList<>();
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
-    @PostConstruct
-    public void setup() {
-        books.add(new Book(1L, "Data Tutashkhia", "Tchabua Amirejibi", true,
-                new User(1L, "tjgharkava")));
-        books.add(new Book(2L, "The Knight in the Panther's Skin", "Shota Rustaveli", true,
-                new User(2L, "elon.musk")));
-        books.add(new Book(3L, "Murder on the Orient Express", "Agatha Christie", false,
-                new User(3L, "donald_duck")));
+    public BookService(BookRepository bookRepository, UserRepository userRepository) {
+        this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public List<BookDTO> getBooks() {
+        return bookRepository.findAll().stream().map(this::mapBook).collect(Collectors.toList());
     }
 
-    public void addBook(Book book) {
-        books.add(book);
+    public void addBook(BookDTO book) {
+
     }
 
-    public void updateBook(Long id, Book book) {
-        Book bookToUpdate = findBook(id);
-        if(bookToUpdate != null) {
-            bookToUpdate.setTitle(book.getTitle());
-            bookToUpdate.setAuthor(book.getAuthor());
-            bookToUpdate.setBorrowed(book.isBorrowed());
-        }
+    public void updateBook(Long id, BookDTO book) {
+
     }
 
     public void deleteBook(Long id) {
-        Book bookToDelete = findBook(id);
-        if(bookToDelete != null) {
-            books.remove(bookToDelete);
-        }
+
     }
 
-    public Book findBook(Long id) {
-        for(Book book : books) {
-            if(book.getId() == id) {
-                return book;
-            }
-        }
-        return null;
+    public BookDTO findBook(Long id) {
+        Book book = bookRepository.findById(id).get();
+        return mapBook(book);
+    }
+
+    private BookDTO mapBook(Book book) {
+        return new BookDTO(book.getId(), book.getTitle(), book.getAuthor(), book.getBorrowed(),
+                new UserDTO(
+                        book.getBorrower().getId(),
+                        book.getBorrower().getName()));
     }
 }

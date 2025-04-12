@@ -1,6 +1,6 @@
 package ge.temo.librarymanagement;
 
-import ge.temo.librarymanagement.model.Book;
+import ge.temo.librarymanagement.model.BookDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +16,13 @@ public class BookController {
     }
 
     @GetMapping
-    List<Book> getBooks() {
+    List<BookDTO> getBooks() {
         return bookService.getBooks();
     }
 
     @GetMapping("{id}")
-    ResponseEntity<Book> getBook(@PathVariable Long id) {
-        Book book = bookService.findBook(id);
+    ResponseEntity<BookDTO> getBook(@PathVariable Long id) {
+        BookDTO book = bookService.findBook(id);
         if (book != null) {
             return ResponseEntity.ok(book);
         }
@@ -30,13 +30,13 @@ public class BookController {
     }
 
     @PostMapping
-    void addBook(@RequestBody Book book) {
+    void addBook(@RequestBody BookDTO book) {
         bookService.addBook(book);
     }
 
     @PutMapping("{id}")
-    ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book) {
-        Book bookToUpdate = bookService.findBook(id);
+    ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO book) {
+        BookDTO bookToUpdate = bookService.findBook(id);
         if (bookToUpdate != null) {
             bookToUpdate.setAuthor(book.getAuthor());
             bookToUpdate.setTitle(book.getTitle());
@@ -47,8 +47,8 @@ public class BookController {
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<Book> deleteBook(@PathVariable Long id) {
-        Book bookToDelete = bookService.findBook(id);
+    ResponseEntity<BookDTO> deleteBook(@PathVariable Long id) {
+        BookDTO bookToDelete = bookService.findBook(id);
         if (bookToDelete != null) {
             bookService.deleteBook(id);
             return ResponseEntity.ok(bookToDelete);
