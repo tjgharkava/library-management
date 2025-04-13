@@ -1,5 +1,6 @@
 package ge.temo.librarymanagement;
 
+import ge.temo.librarymanagement.error.NotFoundException;
 import ge.temo.librarymanagement.model.BookDTO;
 import ge.temo.librarymanagement.model.BookRequest;
 import ge.temo.librarymanagement.model.UserDTO;
@@ -31,7 +32,7 @@ public class BookService {
     }
 
     public void updateBook(Long id, BookRequest request) {
-        Book book = bookRepository.findById(id).get();
+        Book book = bookRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
         book.setTitle(request.getTitle());
         book.setAuthor(request.getAuthor());
         book.setBorrowed(request.isBorrowed());
@@ -46,7 +47,7 @@ public class BookService {
     }
 
     public BookDTO findBook(Long id) {
-        Book book = bookRepository.findById(id).get();
+        Book book = bookRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
         return mapBook(book);
     }
 
@@ -55,5 +56,9 @@ public class BookService {
                 new UserDTO(
                         book.getBorrower().getId(),
                         book.getBorrower().getName()));
+    }
+
+    private NotFoundException buildNotFoundException(Long id) {
+        return new NotFoundException("Book with id " + id + " not found");
     }
 }

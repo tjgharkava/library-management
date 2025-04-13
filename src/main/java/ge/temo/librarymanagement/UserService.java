@@ -1,5 +1,6 @@
 package ge.temo.librarymanagement;
 
+import ge.temo.librarymanagement.error.NotFoundException;
 import ge.temo.librarymanagement.model.UserDTO;
 import ge.temo.librarymanagement.model.UserRequest;
 import ge.temo.librarymanagement.persistance.User;
@@ -27,7 +28,7 @@ public class UserService {
     }
 
     public UserDTO updateUser(Long id, UserRequest request) {
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
         user.setName(request.getName());
         userRepository.save(user);
 
@@ -46,6 +47,10 @@ public class UserService {
     }
 
     public User findUser(Long id) {
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
+    }
+
+    private NotFoundException buildNotFoundException(Long id) {
+        return new NotFoundException("User with id " + id + " not found");
     }
 }

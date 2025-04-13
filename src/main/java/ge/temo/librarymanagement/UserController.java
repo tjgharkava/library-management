@@ -2,6 +2,7 @@ package ge.temo.librarymanagement;
 
 import ge.temo.librarymanagement.model.UserDTO;
 import ge.temo.librarymanagement.model.UserRequest;
+import ge.temo.librarymanagement.persistance.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,12 @@ public class UserController {
                            @RequestParam int size,
                            @RequestParam String name) {
         return userService.getUsers(page, size, name);
+    }
+
+    @GetMapping("{id}")
+    ResponseEntity<User> getUsers(@PathVariable Long id) {
+        User user = userService.findUser(id);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping
