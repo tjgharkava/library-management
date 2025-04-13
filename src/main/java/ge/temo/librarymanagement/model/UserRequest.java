@@ -1,18 +1,15 @@
 package ge.temo.librarymanagement.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class UserRequest {
+    @NotBlank
+    @Size(max = 25)
     private String name;
-
-    public UserRequest(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
 }

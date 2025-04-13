@@ -5,21 +5,16 @@ import ge.temo.librarymanagement.model.BookRequest;
 import ge.temo.librarymanagement.model.UserDTO;
 import ge.temo.librarymanagement.persistance.Book;
 import ge.temo.librarymanagement.persistance.BookRepository;
-import ge.temo.librarymanagement.persistance.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
     private final UserService userService;
-
-    public BookService(BookRepository bookRepository, UserService userService) {
-        this.bookRepository = bookRepository;
-
-        this.userService = userService;
-    }
 
     public Page<BookDTO> getBooks(int page, int size) {
         return bookRepository.findBooks(PageRequest.of(page, size));

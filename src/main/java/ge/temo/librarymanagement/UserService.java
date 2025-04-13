@@ -4,19 +4,17 @@ import ge.temo.librarymanagement.model.UserDTO;
 import ge.temo.librarymanagement.model.UserRequest;
 import ge.temo.librarymanagement.persistance.User;
 import ge.temo.librarymanagement.persistance.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     public Page<UserDTO> getUsers(int page, int size, String name) {
         return userRepository.findUsers(name, PageRequest.of(page, size));
